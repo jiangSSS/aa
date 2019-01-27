@@ -148,6 +148,14 @@ const router = new Router({
       }
     },
     {
+      path: '/mayMoney',
+      name: 'mayMoney',
+      component: () => import("@/views/money/mayMoney.vue"),
+      meta: {
+        title: "可能感兴趣的项目"
+      }
+    },
+    {
       path: '/projectProgress',
       name: 'progress',
       component: () => import("@/views/money/progress.vue"),
@@ -161,6 +169,30 @@ const router = new Router({
       component: () => import("@/views/money/investors.vue"),
       meta: {
         title: "投资人详情"
+      }
+    },
+    {
+      path: '/money/moreMoney',
+      name: 'moreMoney',
+      component: () => import("@/views/money/moreMoney.vue"),
+      meta: {
+        title: "更多资金"
+      }
+    },
+    {
+      path: '/projectA/moreProject',
+      name: 'moreProject',
+      component: () => import("@/views/projectA/moreProject.vue"),
+      meta: {
+        title: "更多项目"
+      }
+    },
+    {
+      path: '/projectA/mayProject',
+      name: 'mayProject',
+      component: () => import("@/views/projectA/mayProject.vue"),
+      meta: {
+        title: "更多项目"
       }
     },
     {

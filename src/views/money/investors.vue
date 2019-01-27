@@ -3,7 +3,7 @@
     <div class="all">
         <Header></Header>
         <div class="containerAll">
-            
+
             <div class="detail">
                 <div class="clearfix investors">
                     <div><img class="fll" src="../../../static/app/img/usrname.jpg" style="width:1.2rem"></div>
@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="message">
-                    
+
                     <div>
                         <span>所属行业:</span>
                         <span>互联网</span>
@@ -77,23 +77,23 @@
                     <div class="contentDesc">我们的专家团由超过50万专业人士组成，即使在世界各地有着繁忙的日程，他们也坚持每天回答客户最具</div>
                 </div>
                 <div class="contentTell ">
-                    <div class="detaila">
-                        <div class="peojectTitle">TA的更多资金</div>
+                    <div class="detaila" @click="tomoreMoney">
+                        <div class="peojectTitle">TA的更多资金<i class="iconfont icon-xiangyou flr"></i></div>
                     </div>
-                    <div class="mayProject" v-for="(item,index) in capitalList" :key="index">
-                         <router-link :to="{name:'moneyDetail',query:{id:item.id}}" >
-                        <div class="mayTitle">
-                            {{item.title}}
-                        </div>
-                        <div class="mayTime">
-                            <span>投资金额：</span>
-                            <span>{{item.investAmountName}}</span>
-                        </div>
-                        <div class="mayTime">
-                            <span>{{item.capitalSourceName}}</span>
-                        </div>
-                        </router-link>
-                    </div>
+                        <!-- <div class="mayProject" v-for="(item,index) in pageList" :key="index">
+                            <router-link :to="{name:'moneyDetail',query:{id:item.id}}">
+                                <div class="mayTitle">
+                                    {{item.title}}
+                                </div>
+                                <div class="mayTime">
+                                    <span>投资金额：</span>
+                                    <span>{{item.investAmountName}}</span>
+                                </div>
+                                <div class="mayTime">
+                                    <span>{{item.capitalSourceName}}</span>
+                                </div>
+                            </router-link>
+                        </div> -->
                 </div>
             </div>
         </div>
@@ -112,12 +112,16 @@
         },
         data() {
             return {
-                memberInfo:[],
-                moneyDetail:[],
-                capitalList:[]
+                memberInfo: [],
+                memberId: "",
+                loading: false,
+                pageList: [],
+                totalCount: 0,
+                pn:1,
+                id:""
             }
         },
-        methods:{
+        methods: {
             // 投资详情
             getMoneyDetail() {
                 this.id = this.$route.query.id
@@ -125,12 +129,18 @@
                     console.log("投资详情", res)
                     this.moneyDetail = res.data.capital
                     this.memberInfo = res.data.memberInfo
-                    this.capitalList = res.data.capitalList  
+                    this.memberId = res.data.memberInfo.id
+                    this.capitalList = res.data.capitalList
                 })
             },
+            tomoreMoney(){
+                let id = this.$route.query.id
+                this.$router.push({name:'moreMoney',query:{memberId:this.memberId}})
+            }
         },
-        created(){
+        created() {
             this.getMoneyDetail()
+            // this.getMoreMoney()
         }
     }
 </script>
@@ -149,19 +159,22 @@
         background: #f3f5f7;
         margin-top: .9rem
     }
-    .investors{
+
+    .investors {
         border-top: 1px solid #f3f5f7;
         background: #fff;
         padding: .2rem 0;
     }
-    .company{
+
+    .company {
         font-size: .3rem;
-        color: rgb( 153, 153, 153 );
+        color: rgb(153, 153, 153);
         line-height: 1.4;
     }
-    .name{
+
+    .name {
         font-size: .32rem;
-        color: rgb( 51, 51, 51 );
+        color: rgb(51, 51, 51);
         font-weight: bold;
         line-height: 1.8;
     }
@@ -169,7 +182,7 @@
     .projectTitle {
         font-size: .3rem;
         font-family: "PingFang";
-        color: rgb( 51, 51, 51);
+        color: rgb(51, 51, 51);
         font-weight: bold;
         line-height: 1.6;
         padding: .3rem 0 0 0;
@@ -218,32 +231,35 @@
 
     .titleDesc {
         font-size: .3rem;
-        color: rgb( 51, 51, 51);
+        color: rgb(51, 51, 51);
     }
 
     .customer {
-        color: rgb( 0, 89, 130);
+        color: rgb(0, 89, 130);
     }
 
     .contentTell {
         background: #fff;
         padding: .2rem;
         margin-bottom: .3rem;
+
         .detaila {
             background: #fff;
             padding: .2rem 0;
             border-bottom: 1px solid #f3f5f7;
+
             .peojectTitle {
                 border-left: 3px solid #005982; // margin: 0 .3rem;
                 padding-left: .2rem;
                 font-size: .3rem;
                 font-family: "PingFang";
-                color: rgb( 51, 51, 51);
+                color: rgb(51, 51, 51);
                 line-height: 1.533;
 
 
             }
         }
+
         .contentDesc {
             color: rgb(128, 128, 128);
             padding: .1rem 0;
@@ -263,11 +279,10 @@
     .mayProject {
         padding: .15rem 0;
         border-bottom: .05rem solid #f3f5f7
-
     }
 
     .mayTitle {
-        color: rgb( 51, 51, 51);
+        color: rgb(51, 51, 51);
         line-height: 1.6
     }
 
@@ -275,15 +290,18 @@
         line-height: 2;
         color: rgb(128, 128, 128);
     }
-    .message{
+
+    .message {
         background: #fff;
         padding: .2rem;
         margin-bottom: .3rem
     }
-    .message div{
+
+    .message div {
         line-height: 2
     }
-    .message div span:nth-child(1){
+
+    .message div span:nth-child(1) {
         font-family: "PingFang";
         color: rgb(137, 137, 137);
         display: inline-block;

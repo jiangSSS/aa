@@ -77,10 +77,10 @@
                     <div class="contentDesc">我们的专家团由超过50万专业人士组成，即使在世界各地有着繁忙的日程，他们也坚持每天回答客户最具</div>
                 </div>
                 <div class="contentTell ">
-                    <div class="detaila">
-                        <div class="peojectTitle">TA的更多资金</div>
+                    <div class="detaila" @click="tomoreProject">
+                        <div class="peojectTitle">TA的更多项目<i class="iconfont icon-xiangyou flr"></i></div>
                     </div>
-                    <div class="mayProject" v-for="(item,index) in capitalList" :key="index">
+                    <!-- <div class="mayProject" v-for="(item,index) in projectList" :key="index">
                         <div class="mayTitle">
                             {{item.title}}
                         </div>
@@ -91,7 +91,7 @@
                         <div class="mayTime">
                             <span>{{item.capitalSourceName}}</span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -111,21 +111,29 @@
         data() {
             return {
                 memberInfo:[],
-                moneyDetail:[],
-                capitalList:[]
+                projectDetail:[],
+                projectList:[],
+                memberId:"",
+                loading: false,
+                id:""
             }
         },
         methods:{
             // 投资详情
             getMoneyDetail() {
                 this.id = this.$route.query.id
-                this.$axios.get(`/jsp/wap/trCapital/ctrl/jsonCapitalDetail.jsp?id=${this.id}`).then(res => {
+                this.$axios.get(`/jsp/wap/trProject/ctrl/jsonProjectDetail.jsp?id=${this.id}`).then(res => {
                     console.log("投资详情", res)
-                    this.moneyDetail = res.data.capital
+                    this.projectDetail = res.data.project
                     this.memberInfo = res.data.memberInfo
-                    this.capitalList = res.data.capitalList  
+                    this.memberId = res.data.memberInfo.id
+                    this.projectList = res.data.projectList  
                 })
             },
+             tomoreProject(){
+                let id = this.$route.query.id
+                this.$router.push({name:'moreProject',query:{memberId:this.memberId}})
+            }
         },
         created(){
             this.getMoneyDetail()

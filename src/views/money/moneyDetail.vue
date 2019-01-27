@@ -152,21 +152,17 @@
                     <div class="contentDesc">{{moneyDetail.otherExplain}}</div>
                 </div>
                 <div class="contentTell ">
-                    <div class="detaila">
-                        <div class="peojectTitle">可能感兴趣的资金</div>
+                    <!-- <router-link :to="{name:'mayMoney',query:{id}}">
+                        <div class="detaila">
+                            <div class="peojectTitle">可能感兴趣的资金</div>
+                        </div>
+                    </router-link> -->
+                    <div class="detaila" @click="toMayMoney">
+                        <div class="peojectTitle">可能感兴趣的资金 <i class="iconfont icon-xiangyou flr"></i></div>
+                       
                     </div>
                     <!-- <div class="mayProject" v-for="(item,index) in capitalList" :key="index">
-                        <div class="mayTitle">
-                            {{item.aa}}
-                        </div>
-                        <div class="mayTime">
-                            <i class="iconfont icon-shijian"></i>
-                            <span>{{item.time}}</span>
-                        </div>
-                    </div> -->
-                    <div class="mayProject" v-for="(item,index) in capitalList" :key="index">
                         <router-link :to="{name:'moneyDetail',query:{id:item.id}}" >
-                        <!-- <div @click='toDetail(item.id)'> -->
                             <div class="mayTitle">
                                 {{item.title}}
                             </div>
@@ -177,9 +173,8 @@
                             <div class="mayTime">
                                 <span>{{item.capitalSourceName}}</span>
                             </div>
-                        <!-- </div> -->
                         </router-link>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -221,24 +216,6 @@
                         desc: "打造符合投资人口味的完整计划书逻辑框架和商业模式，提出优化建议。"
                     },
                 ],
-                mayProject: [
-                    {
-                        aa: "预防近视阻止近视发生发展的可穿戴品，健康医疗领域，需要融资项目，金额为100万元",
-                        time: "2018-01-01"
-                    },
-                    {
-                        aa: "预防近视阻止近视发生发展的可穿戴品，健康医疗领域，需要融资项目，金额为100万元",
-                        time: "2018-01-01"
-                    },
-                    {
-                        aa: "预防近视阻止近视发生发展的可穿戴品，健康医疗领域，需要融资项目，金额为100万元",
-                        time: "2018-01-01"
-                    },
-                    {
-                        aa: "预防近视阻止近视发生发展的可穿戴品，健康医疗领域，需要融资项目，金额为100万元",
-                        time: "2018-01-01"
-                    },
-                ],
                 moneyDetail: [],
                 follow: 0,
                 id: "",
@@ -250,13 +227,15 @@
                 moneyId: "",
                 myMoney_Count: 0,
                 myMoney_pagination: false,
+
+                memberId:""
             }
         },
         methods: {
-            // toDetail(){
-            //     let id = this.$route.query.id
-            //     this.$router.push({name: 'moneyDetail', params:{id}})
-            // },
+            toDetail(){
+                let id = this.$route.query.id
+                this.$router.push({name: 'moneyDetail', params:{id}})
+            },
             getMyProject(pn) {
                 this.$axios.get("/jsp/wap/center/ctrl/jsonIssueProjectList.jsp", {
                     params: { pageNumber: pn }
@@ -318,8 +297,13 @@
                     console.log("投资详情", res)
                     this.moneyDetail = res.data.capital
                     this.memberInfo = res.data.memberInfo
+                    this.memberId = res.data.memberInfo.id
                     this.capitalList = res.data.capitalList
                 })
+            },
+            toMayMoney(){
+                let id = this.$route.query.id
+                this.$router.push({name:'mayMoney',query:{id}})
             },
             // 获取关注状态
             getFollow() {
@@ -486,21 +470,6 @@
         font-weight: 700;
         padding: .2rem 0 0;
     }
-
-    .mayProject {
-        padding: .1rem 0;
-
-    }
-
-    .mayTitle {
-        color: rgb(128, 128, 128);
-    }
-
-    .mayTime {
-        line-height: 2;
-        color: rgb(128, 128, 128);
-    }
-
     .message {
         background: #fff;
         padding: .2rem;

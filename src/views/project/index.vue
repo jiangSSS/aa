@@ -146,10 +146,10 @@
                     </div>
                 </div>
                 <div class="contentTell ">
-                    <div class="detaila">
-                        <div class="peojectTitle">可能感兴趣的项目</div>
+                    <div class="detaila" @click="toMayProject">
+                        <div class="peojectTitle">可能感兴趣的项目<i class="iconfont icon-xiangyou"></i></div>
                     </div>
-                    <div class="mayProject" v-for="(item,index) in mayProject" :key="index">
+                    <!-- <div class="mayProject" v-for="(item,index) in mayProject" :key="index">
                         <div class="mayTitle">
                             {{item.title}}
                         </div>
@@ -157,7 +157,7 @@
                             <i class="iconfont icon-shijian"></i>
                             <span>{{item.time}}</span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -200,24 +200,6 @@
                         desc: "打造符合投资人口味的完整计划书逻辑框架和商业模式，提出优化建议。"
                     },
                 ],
-                mayProject: [
-                    {
-                        title: "预防近视阻止近视发生发展的可穿戴品，健康医疗领域，需要融资项目，金额为100万元",
-                        time: "2018-01-01"
-                    },
-                    {
-                        title: "预防近视阻止近视发生发展的可穿戴品，健康医疗领域，需要融资项目，金额为100万元",
-                        time: "2018-01-01"
-                    },
-                    {
-                        title: "预防近视阻止近视发生发展的可穿戴品，健康医疗领域，需要融资项目，金额为100万元",
-                        time: "2018-01-01"
-                    },
-                    {
-                        title: "预防近视阻止近视发生发展的可穿戴品，健康医疗领域，需要融资项目，金额为100万元",
-                        time: "2018-01-01"
-                    },
-                ],
                 projectDetail: [],
                 follow: 0,
                 id: "",
@@ -227,6 +209,8 @@
                 projectId: "",
                 moneyId: "",
                 myMoney_Count: 0,
+
+                memberId:""
             }
         },
         methods: {
@@ -302,6 +286,9 @@
                 this.$axios.get(`/jsp/wap/trProject/ctrl/jsonProjectDetail.jsp?id=${this.id}`, ).then(res => {
                     console.log("项目详情", res)
                     this.projectDetail = res.data.project   
+                    this.memberInfo = res.data.memberInfo
+                    this.memberId = res.data.memberInfo.id
+                    this.capitalList = res.data.capitalList
                 })
             },
             // 获取关注状态
@@ -353,6 +340,10 @@
                 this.$axios.get(`/jsp/wap/trProject/ctrl/jsonProjectDynamicList.jsp?id=${this.id}`).then(res => {
                     console.log("项目进展", res)
                 })
+            },
+            toMayProject(){
+                let id = this.$route.query.id
+                this.$router.push({name:'mayProject',query:{id}})
             }
 
         },
